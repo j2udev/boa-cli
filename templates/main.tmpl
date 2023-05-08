@@ -1,0 +1,14 @@
+{{ define "main" }}
+package main
+
+import (
+	"{{ .Module }}/cmd"
+)
+
+func main() {
+	err := cmd.New{{ pascalCase .Command.Name }}Cmd().Execute()
+	if err != nil {
+		panic(err)
+	}
+}
+{{- end }}

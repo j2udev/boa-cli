@@ -1,0 +1,118 @@
+{{- define "import" }}
+{{- if not .HasSubCommands }}
+	{{- if .PkgName }}
+	"{{ .Module }}/internal/{{ .PkgName }}"
+	{{- else }}
+	"{{ .Module }}/internal"
+	{{- end }}
+{{- end }}
+{{- end }}
+
+{{ define "cobraCmd" }}
+package cmd
+
+import (
+	{{- template "import" . }}
+	"github.com/j2udev/boa"
+	"github.com/spf13/cobra"
+)
+
+func New{{ pascalCase .Name }}Cmd() *cobra.Command {
+	return boa.NewCobraCmd("{{ .Name }}").
+		{{- template "withAliases" . }}
+		{{- template "withLong" . }}
+		{{- template "withShort" . }}
+		{{- template "withExample" . }}
+		{{- template "withVersion" . }}
+		{{- template "withSubCommands" . }}
+		{{- template "withRunFunc" . }}
+		{{- template "withFlags" . }}
+		Build()
+}
+{{ end }}
+
+{{- define "withAliases" }}
+		{{- if .Aliases }}
+		WithAliases([]string{{ "{" }}
+		{{- range $i, $item := .Aliases -}}
+		"{{ $item }}"
+		{{- if ne $i (lastIndex $.Aliases) }},{{- end }}
+		{{- end }}{{ "}" }}).
+		{{- end }}
+{{- end }}
+
+{{- define "withLong" }}
+		{{- if .Long }}
+		WithLongDescription("{{ .Long }}").
+		{{- end }}
+{{- end }}
+
+{{- define "withShort" }}
+		{{- if .Short }}
+		WithShortDescription("{{ .Short }}").
+		{{- end }}
+{{- end }}
+
+{{- define "withExample" }}
+		{{- if .Example }}
+		WithExample("{{ .Example }}").
+		{{- end }}
+{{- end }}
+
+{{- define "withVersion" }}
+		{{- if .Version }}
+		WithVersion("{{ .Version }}").
+		{{- end }}
+{{- end }}
+
+{{- define "withSubCommands" }}
+		{{- if .HasSubCommands }}
+		WithSubCommands(
+			{{- range .SubCommands }}
+			New{{ pascalCase .Name }}Cmd(),
+			{{- end }}
+		).
+		{{- end }}
+{{- end }}
+
+{{- define "withRunFunc" }}
+		{{- if not .HasSubCommands }}
+		{{- if .PkgName }}
+		WithRunFunc({{ .PkgName }}.{{ pascalCase .Name }}).
+		{{- else }}
+		WithRunFunc(internal.{{ pascalCase .Name }}).
+		{{- end }}
+		{{- end }}
+{{- end }}
+
+{{- define "withFlags" }}
+		{{- if .HasFlags }}
+		{{- range .Flags }}
+		{{- template "flag" . }}
+		{{- end }}
+		{{- end }}
+{{- end }}
+
+{{- define "flag" }}
+		With
+		{{- pascalCase .Type -}}
+		{{- if .Shorthand -}}
+		P
+		{{- end -}}
+		{{- if .Persistent -}}
+		Persistent
+		{{- end -}}
+		Flag({{- template "flagArgs" . }}).
+{{- end }}
+
+{{- define "flagArgs" -}}
+"{{ .Name }}", {{- if .Shorthand }} "{{ .Shorthand }}", {{- end }} {{ template "defaultFlagValue" . }}, "{{ .Usage }}"
+{{- end -}}
+
+{{- define "defaultFlagValue" -}}
+{{- if eq .Type "string" -}}
+"{{ .DefaultValue }}"
+{{- else -}}
+{{ .DefaultValue }}
+{{- end -}}
+{{- end -}}

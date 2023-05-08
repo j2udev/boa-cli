@@ -1,0 +1,48 @@
+module: example # this should be something like github.com/username/project
+command:
+  name: example # give your root command a name
+  long: A long description of example cli. # give your root command a long description; this is shown in the command's help/usage
+  version: 0.1.0 # give your command a version; a version on the root command implies the CLI version and is automatically available through the --version flag
+  flags: # give your command a list of flags
+  - type: string # specify the type of flag; valid types include: string and bool
+    persistent: true # specify whether the flag should be applied to all child commands
+    name: verbosity # give the flag a name
+    shorthand: v # give the flag a shorthand
+    default: info # give the flag a default value; bool is automatically set to false
+    usage: set the log verbosity for the command # give the flag some usage text
+  - type: bool
+    name: dry-run
+    shorthand: d
+    usage: perform a dry run of the command
+  subCommands: # add subcommands to your command; this can go as deep as you would like
+  - name: get
+    pkg: get # specify an internal package name in which to create the function for the command's business logic; this is not used if the command has subcommands
+    short: get stuff # give your command a short description; this is shown in the parent command's usage/help when listing this command and is the fallback if long isn't set
+    long: get resources
+    example: "example get resource" # give your command some examples to show in the help/usage
+  - name: describe # if you don't specify a pkg for a command that does not have subcommands it will create a function under the 'internal' pkg; e.g. internal/deploy.go
+    short: describe stuff
+    long: describe resources
+    example: example describe resource
+  - name: generate
+    aliases: # give your command a list of aliases
+    - gen
+    short: generate stuff
+    subCommands:
+    - name: files
+      pkg: generate
+      short: generate files
+      flags:
+      - name: overwrite
+        shorthand: o
+        type: bool
+        usage: overwrite existing files
+      - name: type
+        type: string
+        default: yaml
+        usage: specify a file extension (json, yaml, etc)
+    - name: images
+      pkg: generate
+      aliases:
+      - img
+      short: generate images

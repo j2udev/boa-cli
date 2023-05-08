@@ -1,0 +1,16 @@
+{{ define "pkg" }}
+{{- if .PkgName }}
+package {{ .PkgName }}
+{{- else }}
+
+package internal
+{{- end }}
+
+import "github.com/spf13/cobra"
+
+func {{ pascalCase .Name }}(cmd *cobra.Command, args []string) {
+	// Your cmd business logic goes here. Grab any needed flags from the cmd.
+	// e.g.
+	// yourFlagValue := cmd.Flags().GetString("your-flag")
+}
+{{- end }}
