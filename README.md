@@ -1,6 +1,6 @@
-# Boa-CLI
+# Boa Generator
 
-Boa-CLI is a simple tool for generating new CLI projects based on the
+Boa generator is a simple tool for generating new CLI projects based on the
 [Boa](https://github.com/j2udev/boa) pkg. It is loosely inspired by the
 [Cobra-CLI](https://github.com/spf13/cobra-cli/tree/main) and heavily inspired
 by [Bashly](https://github.com/DannyBen/bashly).
