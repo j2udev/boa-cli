@@ -1,3 +1,4 @@
+---
 module: example # this should be something like github.com/username/project
 command:
   name: example # give your root command a name
