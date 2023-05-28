@@ -1,5 +1,9 @@
 # Boa Generator
 
+[![Build Status](https://github.com/j2udev/boa-cli/actions/workflows/go.yml/badge.svg)](https://github.com/j2udev/boa-cli/actions/workflows/go.yml)
+[![GoReportCard](https://goreportcard.com/badge/github.com/j2udev/boa-cli)](https://goreportcard.com/report/github.com/j2udev/boa-cli)
+[![Go Reference](https://pkg.go.dev/badge/github.com/j2udev/boa-cli.svg)](https://pkg.go.dev/github.com/j2udev/boa-cli)
+
 Boa generator is a simple tool for generating new CLI projects based on the
 [Boa](https://github.com/j2udev/boa) pkg. It is loosely inspired by the
 [Cobra-CLI](https://github.com/spf13/cobra-cli/tree/main) and heavily inspired
