@@ -2,11 +2,9 @@ module github.com/j2udev/boa-cli
 
 go 1.20
 
-replace github.com/j2udev/boa => ../boa
-
 require (
 	github.com/charmbracelet/log v0.2.1
-	github.com/j2udev/boa v0.0.0-00010101000000-000000000000
+	github.com/j2udev/boa v0.2.0
 	github.com/spf13/cobra v1.7.0
 )
 
